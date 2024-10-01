@@ -13,10 +13,10 @@ pipeline {
 
     stages {
         stage ('Init') {
-            steps {
+            steps {    //every stage in root directory, we have to give cd for every stage
                 sh """
                 cd 01-vpc
-                terraform init -reconfigure
+                terraform init -reconfigure 
                 ls -ltr
                 """
             }    
@@ -24,26 +24,38 @@ pipeline {
 
         stage ('Plan') {
             steps {
-                sh 'echo this is test'
-                //sh 'sleep 10'
+                sh """
+                cd 01-vpc    
+                terraform plan
+                """
             }
         }
 
         stage ('deploy') {
+            input {
+                message "should we continue?"
+                ok "yes, we should"  //if we press yes then only next step will continue
+            }
             steps {
-                sh 'echo this is deploy'
+                sh """
+                cd 01-vpc
+                terraform apply -auto-approve
+                """
             }
         }
     }
 
     post { //useful as alert for success or failure
+
         always {
             echo 'I will always say hello'
             deleteDir()    //to delete workspace after build
         }
+
         success {
             echo 'I will run when pipeline is success'
         }
+        
         failure {
             echo 'I will run when pipeline is failure'
             // we configure with slack, when failed we get messege
