@@ -39,7 +39,7 @@ pipeline {
     post { //useful as alert for success or failure
         always {
             echo 'I will always say hello'
-            deleteDir()    #to delete workspace after build
+            deleteDir()    //to delete workspace after build
         }
         success {
             echo 'I will run when pipeline is success'
