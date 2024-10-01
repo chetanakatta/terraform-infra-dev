@@ -11,6 +11,10 @@ pipeline {
         ansiColor('xterm')
     }
 
+    parameters {  //for decisions we use when condition
+        choice( name: 'action', choices: ['Apply', 'Destroy'], description: 'pick something')
+    }
+
     stages {
         stage ('Init') {
             steps {    //every stage in root directory, we have to give cd for every stage
@@ -55,7 +59,7 @@ pipeline {
         success {
             echo 'I will run when pipeline is success'
         }
-        
+
         failure {
             echo 'I will run when pipeline is failure'
             // we configure with slack, when failed we get messege
