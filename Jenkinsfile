@@ -8,6 +8,7 @@ pipeline {
         //after particular time job will be failed (timeout counter starts before agent is allocated)
         timeout (time: 30, unit: 'MINUTES')
         disableConcurrentBuilds () //disables multiple executions
+        ansiColor('xterm')
     }
 
     stages {
